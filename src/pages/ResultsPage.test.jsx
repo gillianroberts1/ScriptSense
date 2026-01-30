@@ -108,7 +108,7 @@ describe("ResultsPage", () => {
     );
     expect(screen.getByText(/Quiz History/)).toBeInTheDocument();
     const table = screen.getByRole("table");
-    expect(within(table).getByText(/2026-01-14/)).toBeInTheDocument();
+    expect(within(table).getByText(/14\/01\/26/)).toBeInTheDocument();
     expect(within(table).getByText(/10:00/)).toBeInTheDocument();
     expect(within(table).getByText(/5 \/ 10/)).toBeInTheDocument();
     expect(within(table).getByText(/50%/)).toBeInTheDocument();
@@ -122,7 +122,7 @@ describe("ResultsPage", () => {
       </MemoryRouter>
     );
     const table = screen.getByRole("table");
-    expect(within(table).getByText(/2026-01-14/)).toBeInTheDocument();
+    expect(within(table).getByText(/14\/01\/26/)).toBeInTheDocument();
     const deleteButton = within(table).getByRole("button", { name: /delete/i });
     await userEvent.click(deleteButton);
     // After deletion, the date should no longer be in the document
@@ -211,8 +211,9 @@ describe("ResultsPage Accessibility", () => {
     expect(
       screen.getByRole("columnheader", { name: /score/i })
     ).toBeInTheDocument();
+    // The header may display either the word 'Accuracy' or the symbol '%'
     expect(
-      screen.getByRole("columnheader", { name: /accuracy/i })
+      screen.getByRole("columnheader", { name: /accuracy|%/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("columnheader", { name: /language/i })

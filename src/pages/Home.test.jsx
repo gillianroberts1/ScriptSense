@@ -1,30 +1,19 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+const mockedNavigate = vi.fn();
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useNavigate: () => mockedNavigate,
+  };
+});
+
 import Home from "./Home";
 
-// Mock window.location
-const originalLocation = window.location;
-beforeAll(() => {
-  delete window.location;
-  window.location = { href: "", assign: vi.fn() };
-});
-afterAll(() => {
-  window.location = originalLocation;
-});
-
 describe("Home", () => {
-  beforeEach(() => {
-    window.location.href = "";
-    if (window.location.assign) window.location.assign.mockClear();
-  });
+  beforeEach(() => mockedNavigate.mockClear());
 
   it("renders the welcome heading", () => {
     render(<Home />);
@@ -47,11 +36,11 @@ describe("Home", () => {
     ).toBeInTheDocument();
   });
 
-  it("clicking Start Quiz sets window.location.href to /quiz", () => {
+  it("clicking Start Quiz calls navigate('/quiz')", () => {
     render(<Home />);
     const btn = screen.getByRole("button", { name: /start quiz/i });
     fireEvent.click(btn);
-    expect(window.location.href).toBe("/quiz");
+    expect(mockedNavigate).toHaveBeenCalledWith("/quiz");
   });
 
   it("applies correct CSS class names", () => {
