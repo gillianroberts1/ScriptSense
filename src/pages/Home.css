@@ -31,7 +31,12 @@
   height: auto;
   display: block;
 }
-
+@media (max-width: 480px) {
+  .scriptsense-icon {
+    max-width: 180px;
+  } 
+  
+}
 
 /* Triggered spin animation – no styling changes */
 .scriptsense-icon.animate {
