@@ -1,0 +1,66 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`QuestionCard > matches the snapshot for the default QuestionCard 1`] = `
+<DocumentFragment>
+  <div
+    class="question-card"
+  >
+    <div
+      class="question-header"
+    >
+      <span
+        class="question-progress"
+      >
+        Question 1 of 30
+      </span>
+    </div>
+    <div
+      class="question-text"
+    >
+      Which keyword is used to declare a variable that can be reassigned?
+    </div>
+    <div
+      class="options-list"
+    >
+      <button
+        aria-pressed="false"
+        class="option-btn"
+        type="button"
+      >
+        const
+      </button>
+      <button
+        aria-pressed="false"
+        class="option-btn"
+        type="button"
+      >
+        let
+      </button>
+      <button
+        aria-pressed="false"
+        class="option-btn"
+        type="button"
+      >
+        static
+      </button>
+      <button
+        aria-pressed="false"
+        class="option-btn"
+        type="button"
+      >
+        define
+      </button>
+    </div>
+    <div
+      class="question-footer"
+    >
+      <button
+        class="primary-btn"
+        disabled=""
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

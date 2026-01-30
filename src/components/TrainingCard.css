@@ -1,0 +1,94 @@
+.training-card {
+  background: var(--card-bg, var(--color-surface));
+  border-radius: var(--card-radius, 1.2rem);
+  box-shadow: var(--card-shadow, 0 2px 12px rgba(0, 0, 0, 0.07));
+  padding: var(--spacing-lg, 2rem);
+  margin: var(--spacing-md, 1rem) 0;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1rem);
+  box-sizing: border-box;
+}
+.training-card-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-primary, #2d6cdf);
+  margin-bottom: var(--spacing-sm, 0.5rem);
+}
+.training-card-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text, #222);
+}
+.training-card-desc {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary, #555);
+}
+.training-card-level {
+  font-size: 0.95rem;
+  color: var(--color-text, #222);
+}
+.training-card-link {
+  color: var(--color-accent-secondary, #f6ad55);
+  font-weight: 500;
+  text-decoration: underline;
+  margin-top: 0.5rem;
+  align-self: center;
+  transition: color 0.2s;
+}
+.training-card-link:hover {
+  color: var(--color-accent, #4fd1c5);
+}
+
+:root[data-theme="dark"] .training-card {
+  background: var(--card-bg, #23272e);
+  box-shadow: var(--card-shadow, 0 2px 12px rgba(110, 168, 254, 0.07));
+}
+:root[data-theme="dark"] .training-card-header {
+  color: var(--color-primary, #6ea8fe);
+}
+:root[data-theme="dark"] .training-card-title {
+  color: var(--color-text, #f7f8fa);
+}
+:root[data-theme="dark"] .training-card-desc {
+  color: var(--color-text-secondary, #bfc9d1);
+}
+:root[data-theme="dark"] .training-card-level {
+  color: var(--color-text, #f7f8fa);
+}
+:root[data-theme="dark"] .training-card-link {
+  color: var(--color-accent-secondary, #f6ad55);
+}
+:root[data-theme="dark"] .training-card-link:hover {
+  color: var(--color-accent, #4fd1c5);
+}
+
+@media (max-width: 600px) {
+  .training-card {
+    max-width: 80vw;
+    padding: 0.7rem;
+  }
+  .training-card-header {
+    font-size: 1rem;
+  }
+  .training-card-title {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 400px) {
+  .training-card {
+    max-width: 70vw;
+    padding: 0.4rem;
+    border-radius: 0.6rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .training-card-header {
+    font-size: 0.95rem;
+  }
+  .training-card-title {
+    font-size: 0.9rem;
+  }
+}

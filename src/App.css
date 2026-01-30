@@ -1,0 +1,198 @@
+/* Theme toggle button light mode styling */
+.theme-toggle-btn.light {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: var(--btn-border);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-shadow);
+  font-weight: var(--btn-font-weight);
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+  outline: none;
+  z-index: 10;
+}
+/* ========================= */
+/* THEME VARIABLES           */
+/* ========================= */
+
+:root {
+  /* Backgrounds */
+  --color-bg: #f7f8fa;
+  --color-surface: #fff;
+
+  /* Primary & Accent */
+  --color-primary: #4fd1c5;
+  --color-primary-hover: #17544e;
+  --color-secondary: #e3eafc;
+
+  /* Text */
+  --color-text: #222;
+  --color-text-secondary: #555;
+  --color-link: #2d6cdf;
+  --color-link-hover: #1a4fa3;
+
+  /* Borders & Shadows */
+  --color-border: #dbe3ea;
+  --color-shadow: 0 2px 12px rgba(44, 108, 223, 0.07);
+
+  /* Buttons */
+  --btn-bg: var(--color-primary); /* Button background */
+  --btn-bg-hover: var(--color-primary-hover); /* Button background on hover */
+  --btn-text: #fff; /* Button text color */
+  --btn-border: none; /* Button border */
+  --btn-radius: 8px; /* Button border radius */
+  --btn-shadow: none; /* Button shadow */
+  --btn-font-weight: 500; /* Button font weight */
+  --btn-padding: 0.7rem 2rem; /* Button padding */
+  --btn-transition: background 0.2s; /* Button transition */
+
+  /* Misc */
+  --radius: 12px;
+}
+
+/*
+  DARK MODE THEME (active)
+*/
+:root[data-theme="dark"] {
+  --color-bg: #222;
+  --color-surface: #2b2828;
+  --color-primary: #4fd1c5;
+  --color-primary-hover: #12504a;
+  --color-secondary: #2d3646;
+  --color-text: #f7f8fa;
+  --color-text-secondary: #bfc9d1;
+  --color-link: #6ea8fe;
+  --color-link-hover: #3b6cb7;
+  --color-border: #2d3646;
+  --color-shadow: 0 2px 12px rgba(110, 168, 254, 0.07);
+  --btn-bg: var(--color-primary);
+  --btn-bg-hover: var(--color-primary-hover);
+  --btn-text: #181c20;
+  --btn-radius: 8px;
+  --radius: 12px;
+}
+
+/* ========================= */
+/* END THEME VARIABLES       */
+/* ========================= */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  align-items: stretch;
+  background: var(--color-bg);
+}
+
+.app-header {
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 2.2rem;
+  color: #4fd1c5;
+  letter-spacing: 1px;
+}
+
+.app-tagline {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  color: #f6ad55;
+}
+
+.app-nav {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 1rem 0 2rem 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #4fd1c5;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background: #4fd1c5;
+}
+
+.nav-link.active {
+  background: #378b83;
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 108, 223, 0.07);
+  padding: 2rem;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    padding: 1rem;
+    max-width: 80vw;
+  }
+  .app-header {
+    padding: 1rem 0 0.5rem 0;
+  }
+  .app-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    max-width: 80vw;
+    padding: 0.5rem;
+  }
+  .app-header {
+    padding: 0.5rem 0 0.25rem 0;
+  }
+  .app-title {
+    font-size: 1.75rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.25rem;
+    min-height: 200px;
+    border-radius: 8px;
+  }
+  .app-header {
+    padding: 0.25rem 0 0.1rem 0;
+  }
+  .app-title {
+    font-size: 1.5rem;
+    text-align: center;
+    padding-top: 1.25rem;
+  }
+  .app-nav {
+    gap: 0.75rem;
+  }
+}
