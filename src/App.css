@@ -1,18 +1,3 @@
-/* Theme toggle button light mode styling */
-.theme-toggle-btn.light {
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  border: var(--btn-border);
-  border-radius: var(--btn-radius);
-  box-shadow: var(--btn-shadow);
-  font-weight: var(--btn-font-weight);
-  padding: 0.5rem 1.2rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  font-size: 1rem;
-  outline: none;
-  z-index: 10;
-}
 /* ========================= */
 /* THEME VARIABLES           */
 /* ========================= */
@@ -38,23 +23,21 @@
   --color-shadow: 0 2px 12px rgba(44, 108, 223, 0.07);
 
   /* Buttons */
-  --btn-bg: var(--color-primary); /* Button background */
-  --btn-bg-hover: var(--color-primary-hover); /* Button background on hover */
-  --btn-text: #fff; /* Button text color */
-  --btn-border: none; /* Button border */
-  --btn-radius: 8px; /* Button border radius */
-  --btn-shadow: none; /* Button shadow */
-  --btn-font-weight: 500; /* Button font weight */
-  --btn-padding: 0.7rem 2rem; /* Button padding */
-  --btn-transition: background 0.2s; /* Button transition */
+  --btn-bg: var(--color-primary);
+  --btn-bg-hover: var(--color-primary-hover);
+  --btn-text: #fff;
+  --btn-border: none;
+  --btn-radius: 8px;
+  --btn-shadow: none;
+  --btn-font-weight: 500;
+  --btn-padding: 0.7rem 2rem;
+  --btn-transition: background 0.2s;
 
   /* Misc */
   --radius: 12px;
 }
 
-/*
-  DARK MODE THEME (active)
-*/
+/* Dark Mode Theme */
 :root[data-theme="dark"] {
   --color-bg: #222;
   --color-surface: #2b2828;
@@ -75,14 +58,19 @@
 }
 
 /* ========================= */
-/* END THEME VARIABLES       */
+/* GENERAL STYLES            */
 /* ========================= */
+
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
 }
+
+/* ========================= */
+/* LAYOUT                    */
+/* ========================= */
 
 .app-container {
   display: flex;
@@ -111,6 +99,25 @@ body {
   color: #f6ad55;
 }
 
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 108, 223, 0.07);
+  padding: 2rem;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========================= */
+/* NAVIGATION                */
+/* ========================= */
+
 .app-nav {
   display: flex;
   gap: 1.5rem;
@@ -136,19 +143,49 @@ body {
   color: #fff;
 }
 
-.main-content {
-  flex: 1;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background: var(--color-surface);
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(44, 108, 223, 0.07);
-  padding: 2rem;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ========================= */
+/* THEME TOGGLE BUTTON       */
+/* ========================= */
+
+.theme-toggle-btn.light,
+.theme-toggle-btn.dark {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: var(--btn-border);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-shadow);
+  font-weight: var(--btn-font-weight);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-size: 0.75rem;
+  outline: none;
+  z-index: 10;
+}
+
+/* ========================= */
+/* RESPONSIVE DESIGN         */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .main-content {
+    max-width: 80vw;
+    padding: 0.5rem;
+  }
+
+  .app-header {
+    padding: 0.5rem 0 0.25rem 0;
+  }
+
+  .app-title {
+    font-size: 1.75rem;
+    padding-top: 1.5rem;
+  }
+
+  .theme-toggle-btn.light,
+  .theme-toggle-btn.dark {
+    font-size: 0.65rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -156,25 +193,19 @@ body {
     padding: 1rem;
     max-width: 80vw;
   }
+
   .app-header {
     padding: 1rem 0 0.5rem 0;
   }
+
   .app-title {
     font-size: 1.5rem;
   }
-}
 
-@media (max-width: 768px) {
-  .main-content {
-    max-width: 80vw;
-    padding: 0.5rem;
-  }
-  .app-header {
-    padding: 0.5rem 0 0.25rem 0;
-  }
-  .app-title {
-    font-size: 1.75rem;
-    padding-top: 1.5rem;
+  .theme-toggle-btn.light,
+  .theme-toggle-btn.dark {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.75rem;
   }
 }
 
@@ -184,15 +215,23 @@ body {
     min-height: 200px;
     border-radius: 8px;
   }
+
   .app-header {
     padding: 0.25rem 0 0.1rem 0;
   }
+
   .app-title {
     font-size: 1.5rem;
     text-align: center;
     padding-top: 1.25rem;
   }
+
   .app-nav {
     gap: 0.75rem;
+  }
+
+  .theme-toggle-btn.light,
+  .theme-toggle-btn.dark {
+    font-size: 0.6rem;
   }
 }
