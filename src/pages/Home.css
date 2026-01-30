@@ -2,6 +2,9 @@
   text-align: center;
   color: var(--color-text);
   background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .start-quiz-btn {
@@ -21,3 +24,28 @@
 .start-quiz-btn:hover {
   background: var(--btn-bg-hover);
 }
+
+.scriptsense-icon {
+  margin-top: 2rem;
+  max-width: 250px;
+  height: auto;
+  display: block;
+}
+
+
+/* Triggered spin animation – no styling changes */
+.scriptsense-icon.animate {
+  animation: scriptsense-spin 0.7s ease-in-out;
+}
+
+/* Spin keyframes */
+@keyframes scriptsense-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
