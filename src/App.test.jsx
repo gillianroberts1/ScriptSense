@@ -36,7 +36,7 @@ describe("App", () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText("ScriptSense")).toBeInTheDocument();
+    expect(screen.getByAltText(/scriptsense logo/i)).toBeInTheDocument();
     expect(screen.getByText("Build Boost Code")).toBeInTheDocument();
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { Routes, Route, NavLink, Outlet } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
+import logo from "./assets/logo.png";
 
 // Theme context for global theme state
 const ThemeContext = createContext();
@@ -39,7 +40,7 @@ function Layout() {
   return (
     <div className="app-container">
       <header className="app-header" style={{ position: "relative" }}>
-        <h1 className="app-title">ScriptSense</h1>
+        <img src={logo} alt="ScriptSense logo" className="app-title" />
         <p className="app-tagline">Build Boost Code</p>
         <button
           className={`theme-toggle-btn${theme === "dark" ? " dark" : " light"}`}

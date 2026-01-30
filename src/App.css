@@ -91,6 +91,14 @@ body {
   font-size: 2.2rem;
   color: #4fd1c5;
   letter-spacing: 1px;
+  /* When `app-title` is an image, constrain its size to fit the header */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 220px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
 }
 
 .app-tagline {
@@ -224,6 +232,7 @@ body {
     font-size: 1.5rem;
     text-align: center;
     padding-top: 1.25rem;
+    max-width: 180px;
   }
 
   .app-nav {
