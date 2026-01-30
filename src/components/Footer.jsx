@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 export default function Footer() {
@@ -19,9 +20,9 @@ export default function Footer() {
           >
             GitHub
           </a>
-          <a className="footer-link" href="/about">
+          <Link className="footer-link" to="/about">
             About
-          </a>
+          </Link>
           <span className="footer-version">v1.0.0</span>
         </div>
       </div>
