@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
@@ -13,7 +13,15 @@ vi.mock("react-router-dom", async () => {
 import Home from "./Home";
 
 describe("Home", () => {
-  beforeEach(() => mockedNavigate.mockClear());
+  beforeEach(() => {
+    mockedNavigate.mockClear();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+  });
 
   it("renders the welcome heading", () => {
     render(<Home />);
@@ -40,6 +48,7 @@ describe("Home", () => {
     render(<Home />);
     const btn = screen.getByRole("button", { name: /start quiz/i });
     fireEvent.click(btn);
+    vi.advanceTimersByTime(700);
     expect(mockedNavigate).toHaveBeenCalledWith("/quiz");
   });
 

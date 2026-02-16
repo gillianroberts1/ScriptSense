@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { vi, describe, expect, it } from "vitest";
+import { vi, describe, expect, it, beforeEach, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import ResultsPage from "./ResultsPage";
 
@@ -33,21 +33,29 @@ vi.mock("../data/jsQuestions", () => ({
   jsQuizMeta: { language: "JavaScript" },
 }));
 
+const mockLoadResults = vi.fn();
+const mockLoadResultsHistory = vi.fn();
+
 vi.mock("../utils/localStorage", () => ({
-  loadResults: () => null,
-  loadResultsHistory: () => [
-    {
-      date: "2026-01-14",
-      time: "10:00",
-      totalCorrect: 5,
-      totalQuestions: 10,
-      score: 50,
-      language: "JavaScript",
-    },
-  ],
+  loadResults: () => mockLoadResults(),
+  loadResultsHistory: () => mockLoadResultsHistory(),
 }));
 
 describe("ResultsPage", () => {
+  beforeEach(() => {
+    mockLoadResults.mockReturnValue(null);
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "2026-01-14",
+        time: "10:00",
+        totalCorrect: 5,
+        totalQuestions: 10,
+        score: 50,
+        language: "JavaScript",
+      },
+    ]);
+  });
+
   it("displays the correct date and language", () => {
     const today = new Date().toLocaleDateString();
     render(
@@ -57,6 +65,45 @@ describe("ResultsPage", () => {
     );
     expect(screen.getByText(new RegExp(`Date: ${today}`))).toBeInTheDocument();
     expect(screen.getByText(/Language: JavaScript/)).toBeInTheDocument();
+  });
+
+  it("uses answers from location.state when available", () => {
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: "/results",
+            state: { answers: [0, 0, 0] },
+          },
+        ]}
+      >
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Score: 3 \/ 3/)).toBeInTheDocument();
+  });
+
+  it("uses answers from storedResults when location.state is unavailable", () => {
+    mockLoadResults.mockReturnValue({
+      answers: [0, 1, 0],
+    });
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    expect(screen.getByText(/Score: 2 \/ 3/)).toBeInTheDocument();
+  });
+
+  it("uses demoAnswers when neither location.state nor storedResults provide answers", () => {
+    mockLoadResults.mockReturnValue(null);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    // demoAnswers should be used
+    expect(screen.getByText(/Quiz Results/)).toBeInTheDocument();
   });
 
   it("shows the concept breakdown section when the toggle is clicked, and hides it when toggled again", async () => {
@@ -115,6 +162,16 @@ describe("ResultsPage", () => {
     expect(within(table).getByText(/JavaScript/)).toBeInTheDocument();
   });
 
+  it("does not display quiz history table when resultsHistory is empty", () => {
+    mockLoadResultsHistory.mockReturnValue([]);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    expect(screen.queryByText(/Quiz History/)).not.toBeInTheDocument();
+  });
+
   it("deletes a result from history when the delete button is clicked", async () => {
     render(
       <MemoryRouter>
@@ -129,36 +186,125 @@ describe("ResultsPage", () => {
     expect(within(table).queryByText(/2026-01-14/)).not.toBeInTheDocument();
   });
 
-  it("renders '-' or empty for missing date, time, and language in resultsHistory", () => {
-    vi.mock("../utils/localStorage", () => ({
-      loadResults: () => null,
-      loadResultsHistory: () => [
-        {
-          date: "",
-          time: "",
-          totalCorrect: 5,
-          totalQuestions: 10,
-          score: 50,
-          language: "",
-        },
-      ],
-    }));
+  it("handles missing date, time, and language in resultsHistory", () => {
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "",
+        time: "",
+        totalCorrect: 5,
+        totalQuestions: 10,
+        score: 50,
+        language: "",
+      },
+    ]);
     render(
       <MemoryRouter>
         <ResultsPage />
       </MemoryRouter>
     );
     const table = screen.getByRole("table");
-    const cells = table.querySelectorAll("td");
-    const emptyOrDashCells = Array.from(cells).filter(
-      (cell) =>
-        cell.textContent.trim() === "-" || cell.textContent.trim() === ""
+    // Should display dashes for missing values
+    expect(within(table).getAllByText(/-/)).toHaveLength(3);
+  });
+
+  it("formats date from YYYY-MM-DD format correctly", () => {
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "2026-02-16",
+        time: "14:30",
+        totalCorrect: 8,
+        totalQuestions: 10,
+        score: 80,
+        language: "JavaScript",
+      },
+    ]);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
     );
-    expect(emptyOrDashCells.length).toBeGreaterThanOrEqual(0);
+    const table = screen.getByRole("table");
+    expect(within(table).getByText(/16\/02\/26/)).toBeInTheDocument();
+  });
+
+  it("formats date from DD/MM/YYYY format correctly", () => {
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "16/02/2026",
+        time: "14:30",
+        totalCorrect: 8,
+        totalQuestions: 10,
+        score: 80,
+        language: "JavaScript",
+      },
+    ]);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    const table = screen.getByRole("table");
+    expect(within(table).getByText(/16\/02\/26/)).toBeInTheDocument();
+  });
+
+  it("handles invalid date strings in resultsHistory", () => {
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "invalid-date",
+        time: "14:30",
+        totalCorrect: 8,
+        totalQuestions: 10,
+        score: 80,
+        language: "JavaScript",
+      },
+    ]);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    const table = screen.getByRole("table");
+    // Should return the original string if it can't be parsed
+    expect(within(table).getByText(/invalid-date/)).toBeInTheDocument();
+  });
+
+  it("handles time truncation for display", () => {
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "2026-02-16",
+        time: "14:30:45",
+        totalCorrect: 8,
+        totalQuestions: 10,
+        score: 80,
+        language: "JavaScript",
+      },
+    ]);
+    render(
+      <MemoryRouter>
+        <ResultsPage />
+      </MemoryRouter>
+    );
+    const table = screen.getByRole("table");
+    // Should only display HH:MM
+    expect(within(table).getByText(/14:30/)).toBeInTheDocument();
   });
 });
 
 describe("ResultsPage Accessibility", () => {
+  beforeEach(() => {
+    mockLoadResults.mockReturnValue(null);
+    mockLoadResultsHistory.mockReturnValue([
+      {
+        date: "2026-01-14",
+        time: "10:00",
+        totalCorrect: 5,
+        totalQuestions: 10,
+        score: 50,
+        language: "JavaScript",
+      },
+    ]);
+  });
+
   it("concept breakdown toggle button has correct aria attributes", async () => {
     render(
       <MemoryRouter>
@@ -180,26 +326,11 @@ describe("ResultsPage Accessibility", () => {
   });
 
   it("results table is accessible with proper headers", () => {
-    // Mock resultsHistory for this test
-    vi.mock("../utils/localStorage", () => ({
-      loadResults: () => null,
-      loadResultsHistory: () => [
-        {
-          date: "2026-01-14",
-          time: "10:00",
-          totalCorrect: 5,
-          totalQuestions: 10,
-          score: 50,
-          language: "JavaScript",
-        },
-      ],
-    }));
     render(
       <MemoryRouter>
         <ResultsPage />
       </MemoryRouter>
     );
-    // eslint-disable-next-line no-unused-vars
     const table = screen.getByRole("table");
     // Check for accessible headers
     expect(
